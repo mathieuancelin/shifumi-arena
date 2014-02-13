@@ -1,0 +1,54 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<table class="table table-responsive table-striped">
+    <thead>
+        <th>Date</th>
+        <th>Players</th>
+        <th></th>
+    </thead>
+    <tbody id="logs" >
+
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var last = 0;
+        var limit = 100;
+        function updateLogs() {
+            $.get('/logs/' + last, function(data) {
+                _.each(data, function(item) {
+
+                    if (item.error) {
+                        $('#logs').prepend('<tr style="background-color: #f5e79e"><td>' + new Date() + '</td><td></td><td>ERROR : ' + item.error + '</td></tr>');
+                    } else {
+                        console.log(data);
+                        if (item.playerWin) {
+                            $('#logs').prepend('<tr><td>' + new Date(item.at) + '</td><td>' + item.playerIp + ' vs. ' + item.counterPlayerIp + '</td><td>' + item.playerIp + ' win !!!</td></tr>')
+                        } else if (item.counterPlayerWin) {
+                            $('#logs').prepend('<tr><td>' + new Date(item.at) + '</td><td>' + item.playerIp + ' vs. ' + item.counterPlayerIp + '</td><td>' + item.counterPlayerIp + ' win !!!</td></tr>')
+                        } else {
+                            $('#logs').prepend('<tr><td>' + new Date(item.at) + '</td><td>' + item.playerIp + ' vs. ' + item.counterPlayerIp + '</td><td>No one win ...</td></tr>')
+                        }
+                    }
+                });
+            }).then(function() {
+                if ($('#logs tr').length > limit) {
+                    var i = 0;
+                    $('#logs tr').each(function() {
+                        i++;
+                        if (i > limit) {
+                            $(this).remove();
+                        }
+                    });
+                }
+            });
+            last = new Date().getTime();
+        }
+        updateLogs();
+        setInterval(updateLogs, 1000);
+    });
+</script>
+
+
