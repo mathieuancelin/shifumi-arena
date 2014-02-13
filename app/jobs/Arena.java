@@ -166,7 +166,7 @@ public class Arena extends Job<ArenaResult> {
         private String id;
 
         public ActualPlayer(String ip) {
-            this.games = "http://" + ip + ":9000/games";
+            this.games = "http://" + ip + "/games";
             this.ip = ip;
         }
 
@@ -181,7 +181,7 @@ public class Arena extends Job<ArenaResult> {
         @Override
         public Game game(String id) {
             this.id = id;
-            String onegame = "http://" + ip + ":9000/games/" + id;
+            String onegame = "http://" + ip + "/games/" + id;
             WS.HttpResponse response = WS.url(onegame).get();
             if (!response.success()) {
                 throw new RuntimeException("Retrieve game failed");
@@ -204,7 +204,7 @@ public class Arena extends Job<ArenaResult> {
 
         @Override
         public List<String> hands(int rounds) {
-            String onegame = "http://" + ip + ":9000/games/" + id;
+            String onegame = "http://" + ip + "/games/" + id;
             WS.HttpResponse response = WS.url(onegame).get();
             if (!response.success()) {
                 throw new RuntimeException("Retrieve hands failed");
@@ -230,7 +230,7 @@ public class Arena extends Job<ArenaResult> {
 
         @Override
         public void submit(Game game) {
-            String onegame = "http://" + ip + ":9000/games/" + id;
+            String onegame = "http://" + ip + "/games/" + id;
             WS.HttpResponse response = WS.url(onegame).body(new Gson().toJson(game)).post();
             if (!response.success()) {
                 throw new RuntimeException("Finish game failed");
