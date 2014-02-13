@@ -6,15 +6,6 @@
 GET     /                                       Application.index
 GET     /logs/{from}                            Application.logs
 
-GET     /games                                  Application.getAllGames
-POST    /games                                  Application.notifyNewGame
-GET     /games/{id}                             Application.getGame
-POST    /games/{id}                             Application.finishGame
-
-GET     /ui/games                               Application.getAllGamesUI
-GET     /ui/games/{id}                          Application.getGameUI
-
-
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
